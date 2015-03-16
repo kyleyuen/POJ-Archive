@@ -1,0 +1,82 @@
+#include <iostream>
+#include <cstdlib>
+
+using namespace std;
+
+void dfs(int a);
+
+int c[11],d[41],s,n,sum;
+bool ok;
+
+int main()
+{
+	int t,it,i,tp;
+	cin>>t;
+	for(it=1;it<=t;it++) {
+		cin >> s >> n;
+		for (i = 0; i != 11; ++i) {
+            c[i] = 0;
+        }
+		for(i = 1; i <= 40; i++) {
+            d[i] = 1;
+        }
+		sum = 0;
+		for(i=1;i<=n;i++) {
+			cin>>tp;
+			c[tp]++;
+			sum+=tp*tp;
+		}
+		if(sum!=s*s) {
+            ok=false;
+        }
+		else {
+            ok=false;
+            dfs(0);
+        }
+        
+		if(ok) {
+            cout<<"KHOOOOB!"<<endl;
+        }
+		else {
+            cout<<"HUTUTU!"<<endl;
+        }
+	}
+	system("pause");
+	return 0;
+}
+
+void dfs(int a)
+{
+	int i,j,put,p;
+	bool f;
+	if (a == n) {
+        ok=true;
+        return;
+    }
+	for(i=1,put=41;i<=s;i++) {
+		if(d[i]<put) {
+            put=d[i];p=i;
+        }
+    }
+	for(i=10;i>=1;i--) {
+		if(c[i]>0 && put+i-1<=s && p+i-1<=s) {
+			for(j=p,f=true;j<=p+i-1;j++) {
+				if(d[j]>put) {
+                    f=false;
+                    break;
+                }
+            }
+			if(f) {
+				for(j=p;j<=p+i-1;j++) {
+                    d[j]+=i;
+                }
+				c[i]--;
+				dfs(a+1);
+				c[i]++;
+				for(j=p;j<=p+i-1;j++) {
+                    d[j]-=i;
+                }
+			}
+		}
+    }
+}
